@@ -1,0 +1,11 @@
+.shell {
+  min-height: 100vh;
+  background: var(--sat-bg);
+  font-family: var(--sat-font);
+  color: var(--sat-tx);
+  padding: 44px 20px;
+}
+
+.wide {
+  padding: 44px var(--sat-pad);
+}

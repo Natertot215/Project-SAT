@@ -1,0 +1,39 @@
+.grid {
+  display: grid;
+  gap: var(--sat-space-2);
+  justify-content: center;
+}
+
+.cell {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--sat-radius-md);
+  font-size: var(--sat-font-size-base);
+  font-weight: var(--sat-font-weight-medium);
+  background: var(--sat-sf2);
+  color: var(--sat-tx2);
+  border: 2px solid var(--sat-bdr);
+  cursor: pointer;
+  font-family: var(--sat-font);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cellUnanswered {
+  background: transparent;
+  color: var(--sat-tx3);
+  border: 2px dashed var(--sat-bdr2);
+}
+
+.cellFlagged {
+  background: var(--sat-warn-dim);
+  color: var(--sat-warn);
+  border: 2px solid var(--sat-warn);
+}
+
+.cellCurrent {
+  background: var(--sat-sf3);
+  color: var(--sat-tx);
+  border: 2px solid var(--sat-tx2);
+}

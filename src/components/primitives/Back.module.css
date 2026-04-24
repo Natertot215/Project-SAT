@@ -1,0 +1,15 @@
+.back {
+  background: none;
+  border: none;
+  color: var(--sat-tx3);
+  font-family: var(--sat-font);
+  font-size: var(--sat-font-size-md);
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: var(--sat-space-5);
+  transition: color var(--sat-duration-base);
+}
+
+.back:hover {
+  color: var(--sat-tx2);
+}

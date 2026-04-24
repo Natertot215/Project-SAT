@@ -1,0 +1,100 @@
+/*
+ * Design tokens — single source of truth.
+ *
+ * This file is the bridge between design (Figma) and code. When a Figma
+ * MCP / design-to-code flow is wired up later, it should regenerate this
+ * file. Every component references these variables via var(--sat-*), so
+ * updating a token here propagates everywhere automatically.
+ */
+
+:root {
+  /* ── Surfaces ─────────────────────────────────────────────────── */
+  --sat-bg:      #191919;
+  --sat-sf:      #222222;
+  --sat-sf2:     #2a2a2a;
+  --sat-sf3:     #333333;
+
+  /* ── Borders ──────────────────────────────────────────────────── */
+  --sat-bdr:     #333333;
+  --sat-bdr2:    #444444;
+
+  /* ── Text ─────────────────────────────────────────────────────── */
+  --sat-tx:      #e8e8e8;
+  --sat-tx2:     #a0a0a0;
+  --sat-tx3:     #666666;
+
+  /* ── Selection ────────────────────────────────────────────────── */
+  --sat-sel:     #ffffff;
+  --sat-sel-dim: rgba(255, 255, 255, 0.08);
+
+  /* ── Status: correct ──────────────────────────────────────────── */
+  --sat-ok:      #7ec89a;
+  --sat-ok-dim:  rgba(126, 200, 154, 0.12);
+
+  /* ── Status: incorrect ────────────────────────────────────────── */
+  --sat-bad:     #d98a8a;
+  --sat-bad-dim: rgba(217, 138, 138, 0.12);
+
+  /* ── Status: flagged ──────────────────────────────────────────── */
+  --sat-warn:     #d4b876;
+  --sat-warn-dim: rgba(212, 184, 118, 0.12);
+
+  /* ── Highlight (passage text selection) ──────────────────────── */
+  --sat-warn-sel:  rgba(212, 184, 118, 0.35);
+  --sat-warn-mark: rgba(212, 184, 118, 0.30);
+
+  /* ── Overlay (modal backdrop) ─────────────────────────────────── */
+  --sat-overlay: rgba(0, 0, 0, 0.6);
+
+  /* ── Typography ───────────────────────────────────────────────── */
+  --sat-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --sat-font-size-xs:  11px;
+  --sat-font-size-sm:  12px;
+  --sat-font-size-md:  13px;
+  --sat-font-size-base:14px;
+  --sat-font-size-lg:  15px;
+  --sat-font-size-xl:  17px;
+  --sat-font-size-2xl: 20px;
+  --sat-font-size-3xl: 22px;
+  --sat-font-size-4xl: 26px;
+  --sat-font-size-5xl: 32px;
+
+  --sat-font-weight-regular: 400;
+  --sat-font-weight-medium:  600;
+  --sat-font-weight-bold:    700;
+
+  --sat-line-height-tight: 1.4;
+  --sat-line-height-body:  1.6;
+  --sat-line-height-loose: 1.7;
+
+  /* ── Spacing ──────────────────────────────────────────────────── */
+  --sat-pad: 40px;
+
+  --sat-space-1: 4px;
+  --sat-space-2: 8px;
+  --sat-space-3: 12px;
+  --sat-space-4: 16px;
+  --sat-space-5: 20px;
+  --sat-space-6: 24px;
+  --sat-space-7: 32px;
+  --sat-space-8: 40px;
+
+  /* ── Radius ───────────────────────────────────────────────────── */
+  --sat-radius-sm: 5px;
+  --sat-radius-md: 6px;
+  --sat-radius-lg: 8px;
+  --sat-radius-xl: 10px;
+  --sat-radius-2xl: 12px;
+  --sat-radius-full: 9999px;
+
+  /* ── Shadows ──────────────────────────────────────────────────── */
+  --sat-shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.25);
+  --sat-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --sat-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+  /* ── Motion ───────────────────────────────────────────────────── */
+  --sat-duration-fast: 100ms;
+  --sat-duration-base: 120ms;
+  --sat-duration-slow: 150ms;
+}

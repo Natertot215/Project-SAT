@@ -1,0 +1,21 @@
+.pill {
+  padding: 5px 12px;
+  border-radius: var(--sat-radius-md);
+  font-size: var(--sat-font-size-sm);
+  font-family: var(--sat-font);
+  font-weight: var(--sat-font-weight-regular);
+  border: 1px solid var(--sat-bdr);
+  cursor: pointer;
+  background: transparent;
+  color: var(--sat-tx2);
+  transition: all var(--sat-duration-base);
+  line-height: var(--sat-line-height-tight);
+  text-align: left;
+}
+
+.active {
+  font-weight: var(--sat-font-weight-medium);
+  border-color: var(--sat-tx2);
+  background: var(--sat-sel-dim);
+  color: var(--sat-sel);
+}

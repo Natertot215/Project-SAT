@@ -1,0 +1,29 @@
+.btn {
+  padding: 11px 28px;
+  border-radius: var(--sat-radius-lg);
+  font-size: var(--sat-font-size-base);
+  font-family: var(--sat-font);
+  font-weight: var(--sat-font-weight-medium);
+  letter-spacing: 0.01em;
+  border: 1px solid var(--sat-bdr);
+  cursor: pointer;
+  background: transparent;
+  color: var(--sat-tx2);
+  transition: all var(--sat-duration-base);
+}
+
+.small {
+  padding: 8px 20px;
+  font-size: var(--sat-font-size-md);
+}
+
+.danger {
+  border: none;
+  background: var(--sat-bad-dim);
+  color: var(--sat-bad);
+}
+
+.btn:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
