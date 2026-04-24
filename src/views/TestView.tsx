@@ -3,9 +3,9 @@ import Shell from "../components/primitives/Shell";
 import Pill from "../components/primitives/Pill";
 import Btn from "../components/primitives/Btn";
 import Label from "../components/primitives/Label";
-import { TAXONOMY, allSkills, type TaxonomyKey } from "../data/taxonomy";
+import SkillPicker from "../components/SkillPicker";
 import type { SessionType } from "../types";
-import styles from "./PracticeView.module.css";
+import styles from "./formLayout.module.css";
 
 interface TestViewProps {
   onStart: (type: SessionType, n: number, skills: string[]) => void;
@@ -14,59 +14,6 @@ interface TestViewProps {
 export default function TestView({ onStart }: TestViewProps) {
   const [skills, setSkills] = useState<string[]>([]);
   const [length, setLength] = useState<"full" | "half">("full");
-
-  const toggleSkill = (s: string) =>
-    setSkills(p => p.includes(s) ? p.filter(x => x !== s) : [...p, s]);
-  const toggleCategory = (sec: TaxonomyKey, sub: string) => {
-    const cat = TAXONOMY[sec].subtypes[sub];
-    if (cat.every(s => skills.includes(s))) setSkills(p => p.filter(x => !cat.includes(x)));
-    else setSkills(p => [...new Set([...p, ...cat])]);
-  };
-  const toggleSection = (sec: TaxonomyKey) => {
-    const all = allSkills(sec);
-    if (all.every(s => skills.includes(s))) setSkills(p => p.filter(x => !all.includes(x)));
-    else setSkills(p => [...new Set([...p, ...all])]);
-  };
-
-  const renderColumn = (sec: TaxonomyKey) => {
-    const t = TAXONOMY[sec];
-    const all = allSkills(sec);
-    const allSel = all.every(s => skills.includes(s));
-    const selectAllClasses = [styles.selectAll, allSel && styles.selectAllActive]
-      .filter(Boolean).join(" ");
-    return (
-      <div className={styles.column}>
-        <div className={styles.columnHeader}>
-          <span className={styles.columnTitle}>{t.label}</span>
-          <button onClick={() => toggleSection(sec)} className={selectAllClasses}>
-            {allSel ? "Deselect All" : "Select All"}
-          </button>
-        </div>
-        {Object.entries(t.subtypes).map(([sub, subSkills]) => {
-          const catAll = subSkills.every(s => skills.includes(s));
-          const catCount = subSkills.filter(s => skills.includes(s)).length;
-          const catBtnClasses = [styles.categoryBtn, catAll && styles.categoryBtnActive]
-            .filter(Boolean).join(" ");
-          return (
-            <div key={sub} className={styles.category}>
-              <div className={styles.categoryHeader}>
-                <button onClick={() => toggleCategory(sec, sub)} className={catBtnClasses}>
-                  {sub}
-                </button>
-                <span className={styles.categoryCount}>{catCount}/{subSkills.length}</span>
-              </div>
-              <div className={styles.pills}>
-                {subSkills.map(s => (
-                  <Pill key={s} active={skills.includes(s)} onClick={() => toggleSkill(s)}>{s}</Pill>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
   const n = length === "full" ? 98 : 49;
 
   return (
@@ -74,10 +21,7 @@ export default function TestView({ onStart }: TestViewProps) {
       <div className={styles.container}>
         <h1 className={styles.title}>Test</h1>
         <p className={styles.subtitle}>Simulate a full or half-length SAT.</p>
-        <div className={styles.columns}>
-          {renderColumn("math")}
-          {renderColumn("rw")}
-        </div>
+        <SkillPicker skills={skills} onChange={setSkills} />
         <div className={styles.footer}>
           <div className={styles.footerLeft}>
             <Label>Length</Label>

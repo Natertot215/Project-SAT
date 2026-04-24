@@ -37,11 +37,13 @@ src/
 │   ├── Sidebar.tsx           + Sidebar.module.css
 │   ├── ModuleDropdown.tsx    + ModuleDropdown.module.css
 │   ├── BluebookGrid.tsx      + BluebookGrid.module.css
+│   ├── SkillPicker.tsx       + SkillPicker.module.css (used by Practice + Test)
 │   └── primitives/           # Reusable atoms (Btn, Pill, Label, Shell, Back)
 ├── views/
 │   ├── HomeView.tsx
-│   ├── PracticeView.tsx      + PracticeView.module.css (shared with TestView)
+│   ├── PracticeView.tsx
 │   ├── TestView.tsx
+│   ├── formLayout.module.css # Shared page chrome for Practice + Test
 │   ├── HistoryView.tsx       + HistoryView.module.css
 │   └── session/
 │       ├── SessionView.tsx   # Phase orchestrator (no DOM)
