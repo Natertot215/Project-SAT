@@ -1,0 +1,8 @@
+.label {
+  font-size: var(--sat-font-size-xs);
+  font-weight: var(--sat-font-weight-medium);
+  color: var(--sat-tx3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--sat-space-2);
+}

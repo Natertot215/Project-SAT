@@ -1,0 +1,79 @@
+.sidebar {
+  width: 252px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--sat-bdr);
+  display: flex;
+  flex-direction: column;
+  padding: 36px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.brand {
+  padding: 0 22px 30px;
+}
+
+.brandText {
+  font-size: var(--sat-font-size-xl);
+  font-weight: var(--sat-font-weight-bold);
+  letter-spacing: -0.01em;
+  color: var(--sat-tx);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 10px;
+}
+
+.navItem {
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  border-radius: 7px;
+  border: 1px solid var(--sat-bdr);
+  background: transparent;
+  color: var(--sat-tx2);
+  font-family: var(--sat-font);
+  font-size: var(--sat-font-size-lg);
+  font-weight: var(--sat-font-weight-regular);
+  cursor: pointer;
+  transition: background var(--sat-duration-fast), color var(--sat-duration-fast), border-color var(--sat-duration-fast);
+}
+
+.navItemActive {
+  border-color: var(--sat-tx2);
+  background: var(--sat-sf2);
+  color: var(--sat-tx);
+  font-weight: var(--sat-font-weight-medium);
+}
+
+.resumeSlot {
+  margin-top: auto;
+  padding: 0 10px;
+}
+
+.resumeBtn {
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 7px;
+  background: var(--sat-sf);
+  border: 1px solid var(--sat-bdr);
+  font-family: var(--sat-font);
+  font-size: var(--sat-font-size-md);
+  cursor: pointer;
+}
+
+.resumeLabel {
+  font-size: var(--sat-font-size-sm);
+  color: var(--sat-tx3);
+  margin-bottom: var(--sat-space-1);
+}
+
+.resumeTitle {
+  font-weight: var(--sat-font-weight-medium);
+  color: var(--sat-tx2);
+}

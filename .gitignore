@@ -5,4 +5,3 @@ dist
 .env.local
 .vite
 CLAUDE.md
-reference/artifact-ui-template.jsx
