@@ -121,7 +121,7 @@ function SessionDetail({ session: s, onBack, onDelete, onReview }) {
   );
 }
 
-export default function HistoryView({ history, onDelete, onBack }) {
+export default function HistoryView({ history, onDelete }) {
   const [viewing, setViewing] = useState(null);
   const [review, setReview] = useState(null);
 
@@ -150,7 +150,6 @@ export default function HistoryView({ history, onDelete, onBack }) {
   return (
     <Shell>
       <div style={{ maxWidth: 620, margin: "0 auto" }}>
-        <Back onClick={onBack} />
         <h1 style={{ fontSize: 22, fontWeight: 700, margin: "0 0 4px" }}>History</h1>
         <p style={{ color: C.tx3, fontSize: 13, margin: "0 0 36px" }}>Past sessions and scores.</p>
         {history.length === 0 && <p style={{ color: C.tx3, fontSize: 14 }}>No sessions yet.</p>}

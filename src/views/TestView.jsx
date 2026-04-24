@@ -1,12 +1,10 @@
 import Shell from "../components/primitives/Shell.jsx";
-import Back from "../components/primitives/Back.jsx";
 import { C, ff } from "../styles/theme.js";
 
-export default function TestView({ onBack, onStart }) {
+export default function TestView({ onStart }) {
   return (
     <Shell>
       <div style={{ maxWidth: 560, margin: "0 auto" }}>
-        <Back onClick={onBack} />
         <h1 style={{ fontSize: 22, fontWeight: 700, margin: "0 0 4px" }}>Test</h1>
         <p style={{ color: C.tx3, fontSize: 13, margin: "0 0 36px" }}>Simulate a full or half-length SAT.</p>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>

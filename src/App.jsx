@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import Sidebar from "./components/Sidebar.jsx";
 import HomeView from "./views/HomeView.jsx";
 import PracticeView from "./views/PracticeView.jsx";
 import TestView from "./views/TestView.jsx";
 import HistoryView from "./views/HistoryView.jsx";
 import SessionView from "./views/session/SessionView.jsx";
+import { C, ff } from "./styles/theme.js";
 import * as storage from "./lib/storage.js";
 
 export default function App() {
@@ -14,11 +16,6 @@ export default function App() {
 
   useEffect(() => { storage.set("history", history); }, [history]);
   useEffect(() => { storage.set("savedSession", savedSession); }, [savedSession]);
-
-  const goHome = () => {
-    setSessionInit(null);
-    setView("home");
-  };
 
   const startSession = (type, n, skills) => {
     setSessionInit({ type, n, skills });
@@ -44,34 +41,34 @@ export default function App() {
 
   const deleteSession = (id) => setHistory(p => p.filter(h => h.id !== id));
 
+  const handleSidebarNav = (id) => setView(id === "overview" ? "home" : id);
+  const sidebarActive = view === "home" ? "overview" : view;
+
   if (view === "session" && sessionInit) {
     return (
       <SessionView
         init={sessionInit}
-        onHome={goHome}
+        onHome={() => { setSessionInit(null); setView("home"); }}
         onSaveAndExit={handleSaveAndExit}
         onSubmitTest={handleSubmitTest}
       />
     );
   }
 
-  if (view === "practice") {
-    return <PracticeView onBack={goHome} onStart={startSession} />;
-  }
-
-  if (view === "test") {
-    return <TestView onBack={goHome} onStart={startSession} />;
-  }
-
-  if (view === "history") {
-    return <HistoryView history={history} onDelete={deleteSession} onBack={goHome} />;
-  }
-
   return (
-    <HomeView
-      savedSession={savedSession}
-      onResume={resumeSession}
-      onNavigate={(v) => setView(v)}
-    />
+    <div style={{ display: "flex", minHeight: "100vh", background: C.bg, fontFamily: ff, color: C.tx }}>
+      <Sidebar
+        active={sidebarActive}
+        onNavigate={handleSidebarNav}
+        savedSession={savedSession}
+        onResume={resumeSession}
+      />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        {view === "home"     && <HomeView />}
+        {view === "practice" && <PracticeView onStart={startSession} />}
+        {view === "test"     && <TestView onStart={startSession} />}
+        {view === "history"  && <HistoryView history={history} onDelete={deleteSession} />}
+      </div>
+    </div>
   );
 }

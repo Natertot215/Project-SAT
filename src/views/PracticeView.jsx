@@ -1,13 +1,12 @@
 import { useState } from "react";
 import Shell from "../components/primitives/Shell.jsx";
-import Back from "../components/primitives/Back.jsx";
 import Pill from "../components/primitives/Pill.jsx";
 import Btn from "../components/primitives/Btn.jsx";
 import Label from "../components/primitives/Label.jsx";
 import { C } from "../styles/theme.js";
 import { TAXONOMY, allSkills } from "../data/taxonomy.js";
 
-export default function PracticeView({ onBack, onStart }) {
+export default function PracticeView({ onStart }) {
   const [skills, setSkills] = useState([]);
   const [pCount, setPCount] = useState(10);
 
@@ -61,7 +60,6 @@ export default function PracticeView({ onBack, onStart }) {
   return (
     <Shell wide>
       <div style={{ margin: "0 auto" }}>
-        <Back onClick={onBack} />
         <h1 style={{ fontSize: 22, fontWeight: 700, margin: "0 0 4px" }}>Practice</h1>
         <p style={{ color: C.tx3, fontSize: 13, margin: "0 0 32px" }}>Select skills from either or both sections.</p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, marginBottom: 32 }}>
