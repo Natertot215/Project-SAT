@@ -7,7 +7,7 @@ interface ShellProps {
 
 export default function Shell({ children, wide }: ShellProps) {
   return (
-    <div className={`min-h-screen bg-bg text-tx py-11 ${wide ? "px-pad" : "px-5"}`}>
+    <div className={`min-h-screen bg-bg text-tx py-[var(--scale-shell-py)] ${wide ? "px-pad" : "px-5"}`}>
       {children}
     </div>
   );

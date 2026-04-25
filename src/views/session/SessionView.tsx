@@ -1,9 +1,9 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useWideAspect from "../../hooks/useWideAspect";
 import { buildModules } from "../../lib/modules";
-import { assignSkills } from "../../lib/skills";
-import { generateCorrectAnswers } from "../../lib/api";
-import { isRWSkill, RW_SKILLS, MATH_SKILLS } from "../../data/taxonomy";
+import { fetchQuestions, fetchQuestionsByIds } from "../../lib/api";
+import { isRWSkill } from "../../data/taxonomy";
+import LoadingPhase from "./LoadingPhase";
 import QuestionsPhase from "./QuestionsPhase";
 import BreakPhase from "./BreakPhase";
 import ResultsPhase from "./ResultsPhase";
@@ -13,95 +13,112 @@ import type {
   CrossoutMap,
   FlagMap,
   HistoryEntry,
+  Module,
+  PersistedSession,
   Phase,
+  Question,
   ReviewResult,
   SessionInit,
-  SessionState,
+  SessionType,
+  Skill,
 } from "../../types";
 
-function isResumeInit(init: SessionInit): init is { resume: SessionState } {
+function isResumeInit(init: SessionInit): init is { resume: PersistedSession } {
   return "resume" in init && init.resume != null;
-}
-
-function buildInitialState(init: SessionInit): SessionState {
-  // Shape validation happens in App.tsx before we reach here via storage.isValidSessionState.
-  if (isResumeInit(init)) {
-    return init.resume;
-  }
-  const { type, n, skills } = init;
-  const mods = buildModules(type, n);
-  const questions = Array.from({ length: n }, (_, i) => ({ id: i }));
-  const correctMap = generateCorrectAnswers(n);
-
-  let questionSkills: string[] = [];
-  if (type === "practice" && skills) {
-    questionSkills = assignSkills(skills, n);
-  } else {
-    questions.forEach((_, i) => {
-      const m = mods.find((mm) => i >= mm.start && i < mm.start + mm.count);
-      questionSkills.push(
-        m?.sec === "rw"
-          ? RW_SKILLS[i % RW_SKILLS.length]
-          : MATH_SKILLS[i % MATH_SKILLS.length],
-      );
-    });
-  }
-  return {
-    sessionType: type,
-    modules: mods,
-    questions,
-    questionSkills,
-    correctMap,
-    currentMod: 0,
-    qIdx: 0,
-    answers: {},
-    flags: {},
-    crossouts: {},
-  };
 }
 
 interface SessionViewProps {
   init: SessionInit;
   onHome: () => void;
-  onSaveAndExit: (state: SessionState) => void;
+  onSaveAndExit: (state: PersistedSession) => void;
   onSubmit: (entry: HistoryEntry | null) => void;
 }
 
 export default function SessionView({ init, onHome, onSaveAndExit, onSubmit }: SessionViewProps) {
-  // Build once; `init` is stable for the lifetime of this view.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const initial = useMemo(() => buildInitialState(init), []);
+  const [phase, setPhase] = useState<Phase>("loading");
+  const [loadError, setLoadError] = useState<string | null>(null);
 
-  const [sessionType] = useState(initial.sessionType);
-  const [modules] = useState(initial.modules);
-  const [questions] = useState(initial.questions);
-  const [questionSkills] = useState(initial.questionSkills);
-  const [correctMap] = useState(initial.correctMap);
-  const [currentMod, setCurrentMod] = useState(initial.currentMod);
-  const [qIdx, setQIdx] = useState(initial.qIdx);
-  const [answers, setAnswers] = useState<AnswerMap>(initial.answers);
-  const [flags, setFlags] = useState<FlagMap>(initial.flags);
-  const [crossouts, setCrossouts] = useState<CrossoutMap>(initial.crossouts);
+  const [sessionType, setSessionType] = useState<SessionType>("practice");
+  const [modules, setModules] = useState<Module[]>([]);
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questionSkills, setQuestionSkills] = useState<Skill[]>([]);
+  const [currentMod, setCurrentMod] = useState(0);
+  const [qIdx, setQIdx] = useState(0);
+  const [answers, setAnswers] = useState<AnswerMap>({});
+  const [flags, setFlags] = useState<FlagMap>({});
+  const [crossouts, setCrossouts] = useState<CrossoutMap>({});
   const [highlighting, setHighlighting] = useState(false);
-  const [phase, setPhase] = useState<Phase>("questions");
   const [confirmHome, setConfirmHome] = useState(false);
 
   // Aspect-ratio threshold: side-by-side layout when window is wider than 2.25:1.
-  // Below that, vertical stack with answers anchored at the bottom.
   const wide = useWideAspect(2.25);
+
+  // Async load on mount (or when init changes — practically once per mount).
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        if (isResumeInit(init)) {
+          const p = init.resume;
+          const fetched = await fetchQuestionsByIds(p.questionIds);
+          if (cancelled) return;
+          setSessionType(p.sessionType);
+          setModules(p.modules);
+          setQuestions(fetched);
+          setQuestionSkills(p.questionSkills);
+          setCurrentMod(p.currentMod);
+          setQIdx(p.qIdx);
+          setAnswers(p.answers);
+          setFlags(p.flags);
+          setCrossouts(p.crossouts);
+          setPhase("questions");
+        } else {
+          const mods = buildModules(init.type, init.n);
+          const { questions: qs, questionSkills: qSkills } = await fetchQuestions({
+            sessionType: init.type,
+            n: init.n,
+            skills: init.skills,
+            difficulty: init.difficulty,
+            modulesSections: mods.map((m) => ({ start: m.start, count: m.count, sec: m.sec })),
+          });
+          if (cancelled) return;
+          setSessionType(init.type);
+          setModules(mods);
+          setQuestions(qs);
+          setQuestionSkills(qSkills);
+          setCurrentMod(0);
+          setQIdx(0);
+          setAnswers({});
+          setFlags({});
+          setCrossouts({});
+          setPhase("questions");
+        }
+      } catch (err) {
+        if (cancelled) return;
+        const msg = err instanceof Error ? err.message : String(err);
+        setLoadError(msg);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const answeredCount = Object.values(answers).filter((v) => v != null).length;
 
-  const scoreSession = useCallback((): ReviewResult[] =>
-    questions.map((_, i) => ({
-      answered: answers[i] != null,
-      correct: answers[i] != null && answers[i] === correctMap[i],
-      picked: answers[i],
-      correctChoice: correctMap[i],
-      skill: questionSkills[i] || "Unknown",
-      isRW: isRWSkill(questionSkills[i] || ""),
-    })),
-    [answers, correctMap, questions, questionSkills]);
+  const scoreSession = useCallback(
+    (): ReviewResult[] =>
+      questions.map((q, i) => ({
+        answered: answers[i] != null,
+        correct: answers[i] != null && answers[i] === q.correctIndex,
+        picked: answers[i],
+        correctChoice: q.correctIndex,
+        skill: questionSkills[i] || q.skill || "Unknown",
+        isRW: isRWSkill(questionSkills[i] || q.skill || ""),
+      })),
+    [answers, questions, questionSkills],
+  );
 
   const restartModule = (mi: number) => {
     const m = modules[mi];
@@ -125,9 +142,8 @@ export default function SessionView({ init, onHome, onSaveAndExit, onSubmit }: S
     onSaveAndExit({
       sessionType,
       modules,
-      questions,
+      questionIds: questions.map((q) => q.id),
       questionSkills,
-      correctMap,
       currentMod,
       qIdx,
       answers,
@@ -165,6 +181,12 @@ export default function SessionView({ init, onHome, onSaveAndExit, onSubmit }: S
     setPhase("results");
   };
 
+  if (phase === "loading") {
+    return <LoadingPhase error={loadError} onHome={onHome} />;
+  }
+
+  const currentQuestion = questions[qIdx];
+
   if (phase === "questions") {
     return (
       <QuestionsPhase
@@ -172,6 +194,7 @@ export default function SessionView({ init, onHome, onSaveAndExit, onSubmit }: S
         modules={modules}
         currentMod={currentMod}
         qIdx={qIdx}
+        question={currentQuestion}
         questionSkills={questionSkills}
         answers={answers}
         flags={flags}
@@ -242,10 +265,10 @@ export default function SessionView({ init, onHome, onSaveAndExit, onSubmit }: S
     const results = scoreSession();
     return (
       <ReviewPhase
-        sessionType={sessionType}
         modules={modules}
         currentMod={currentMod}
         qIdx={qIdx}
+        question={currentQuestion}
         questionSkills={questionSkills}
         results={results}
         flags={flags}

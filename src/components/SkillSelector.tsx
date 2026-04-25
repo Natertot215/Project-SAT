@@ -20,12 +20,14 @@ function SkillColumn({ sec, skills, onToggleSkill, onToggleCategory, onToggleSec
 
   return (
     <div className="flex-1 min-w-0">
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-[19px] font-bold text-tx">{t.label}</span>
+      <div className="flex items-center justify-between mb-[var(--scale-section-header-mb)]">
+        <span className="text-[length:var(--scale-section-header-text)] font-bold text-tx">
+          {t.label}
+        </span>
         <button
           onClick={() => onToggleSection(sec)}
           aria-label={`${allSel ? "Deselect" : "Select"} all ${t.label} skills`}
-          className={`rounded-lg px-5 py-2 text-[13px] font-semibold cursor-pointer transition-all duration-[120ms] border hover:scale-[1.02] ${
+          className={`rounded-[var(--scale-selectall-rounded)] px-[var(--scale-selectall-px)] py-[var(--scale-selectall-py)] text-[length:var(--scale-selectall-text)] font-semibold cursor-pointer transition-all duration-[120ms] border hover:scale-[1.02] ${
             allSel
               ? "bg-sel-dim text-sel border-tx2 hover:border-tx"
               : "bg-transparent text-tx3 border-bdr hover:bg-sel-dim hover:border-bdr2 hover:text-tx2"
@@ -38,24 +40,29 @@ function SkillColumn({ sec, skills, onToggleSkill, onToggleCategory, onToggleSec
         const catAll = subSkills.every((s) => skills.includes(s));
         const catCount = subSkills.filter((s) => skills.includes(s)).length;
         return (
-          <div key={sub} className="mb-5 last:mb-0">
-            <div className="flex items-center gap-2 mb-2">
+          <div key={sub} className="mb-[var(--scale-subtype-mb)] last:mb-0">
+            <div className="flex items-center gap-2 mb-[var(--scale-subtype-title-mb)]">
               <button
                 onClick={() => onToggleCategory(sec, sub)}
                 aria-label={`Toggle category ${sub}`}
-                className={`bg-transparent border-0 cursor-pointer p-0 text-[15px] font-semibold transition-colors duration-[120ms] hover:text-tx ${
+                className={`bg-transparent border-0 cursor-pointer p-0 text-[length:var(--scale-subtype-title-text)] font-semibold transition-colors duration-[120ms] hover:text-tx ${
                   catAll ? "text-tx" : "text-tx2"
                 }`}
               >
                 {sub}
               </button>
-              <span className="text-[12px] text-tx3">
+              <span className="text-[length:var(--scale-subtype-count-text)] text-tx3">
                 {catCount}/{subSkills.length}
               </span>
             </div>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-[var(--scale-pillgrid-gap)]">
               {subSkills.map((s) => (
-                <Pill key={s} large active={skills.includes(s)} onClick={() => onToggleSkill(s)}>
+                <Pill
+                  key={s}
+                  responsive
+                  active={skills.includes(s)}
+                  onClick={() => onToggleSkill(s)}
+                >
                   {s}
                 </Pill>
               ))}
@@ -95,7 +102,7 @@ export default function SkillSelector({ skills, setSkills }: SkillSelectorProps)
   };
 
   return (
-    <div className="grid grid-cols-2 gap-8 mb-8">
+    <div className="grid grid-cols-2 gap-[var(--scale-skillsel-cols-gap)] mb-[var(--scale-section-gap)]">
       <SkillColumn
         sec="math"
         skills={skills}

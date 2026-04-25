@@ -3,13 +3,14 @@ import Btn from "../../components/primitives/Btn";
 import ModuleDropdown from "../../components/ModuleDropdown";
 import QuestionBody from "../../components/session/QuestionBody";
 import { isRWQuestion } from "../../data/taxonomy";
-import type { AnswerMap, CrossoutMap, FlagMap, Module, Skill } from "../../types";
+import type { AnswerMap, CrossoutMap, FlagMap, Module, Question, Skill } from "../../types";
 
 interface QuestionsPhaseProps {
   sessionType: "practice" | "test";
   modules: Module[];
   currentMod: number;
   qIdx: number;
+  question: Question | undefined;
   questionSkills: Skill[];
   answers: AnswerMap;
   flags: FlagMap;
@@ -36,6 +37,7 @@ function QuestionsPhase({
   modules,
   currentMod,
   qIdx,
+  question,
   questionSkills,
   answers,
   flags,
@@ -61,7 +63,6 @@ function QuestionsPhase({
   const qSkill = questionSkills[qIdx] || "";
   const isRW = isRWQuestion(qSkill, sessionType, mod.sec);
   const choices = ["A", "B", "C", "D"];
-  const showSkill = sessionType === "practice";
 
   return (
     <div className="min-h-screen bg-bg text-tx flex flex-col">
@@ -87,22 +88,17 @@ function QuestionsPhase({
       )}
 
       <div className="pt-5 px-pad pb-2 grid grid-cols-[1fr_auto_1fr] items-center flex-shrink-0">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center min-w-0">
           <button
             onClick={onConfirmHome}
             aria-label="Home"
-            className="bg-sf2 border border-bdr rounded-md text-tx3 text-xs cursor-pointer px-2.5 py-[5px] w-9 flex items-center justify-center transition-all duration-[120ms]"
+            className="bg-sf2 border border-bdr rounded-md text-tx3 text-xs cursor-pointer px-2.5 py-[5px] w-9 flex-shrink-0 flex items-center justify-center transition-all duration-[120ms] hover:scale-[1.02] hover:border-bdr2 hover:text-tx2"
           >
             ⌂
           </button>
-          {showSkill && (
-            <span className="bg-sf2 border border-bdr rounded-md px-3 py-[5px] text-xs text-tx2">
-              {qSkill || "Skill"}
-            </span>
-          )}
           <button
             onClick={onGoBreak}
-            className="bg-sf2 border border-bdr rounded-md text-tx2 text-xs cursor-pointer px-3 py-[5px] transition-all duration-[120ms]"
+            className="bg-sf2 border border-bdr rounded-md text-tx2 text-xs cursor-pointer px-3 py-[5px] flex-shrink-0 transition-all duration-[120ms] hover:scale-[1.02] hover:border-bdr2 hover:text-tx"
           >
             Summary
           </button>
@@ -114,6 +110,9 @@ function QuestionsPhase({
               onSetQIdx(modules[mi].start);
             }}
           />
+          <span className="text-[11px] text-tx3 uppercase tracking-[.08em] font-semibold ml-1 flex-shrink-0">
+            {sessionType}
+          </span>
         </div>
         <span className="text-[13px] font-semibold text-center">
           {modLocalIdx + 1} <span className="text-tx3 font-normal">/ {mod.count}</span>
@@ -123,8 +122,10 @@ function QuestionsPhase({
             onClick={onToggleHighlight}
             aria-label={highlighting ? "Disable highlighting" : "Enable highlighting"}
             aria-pressed={highlighting}
-            className={`rounded-md px-2.5 py-[5px] text-xs min-w-9 text-center cursor-pointer transition-all duration-[120ms] border ${
-              highlighting ? "bg-sel-dim border-tx2 text-sel" : "bg-sf2 border-bdr text-tx3"
+            className={`rounded-md px-2.5 py-[5px] text-xs min-w-9 text-center cursor-pointer transition-all duration-[120ms] hover:scale-[1.02] border ${
+              highlighting
+                ? "bg-sel-dim border-tx2 text-sel hover:border-tx"
+                : "bg-sf2 border-bdr text-tx3 hover:border-bdr2 hover:text-tx2"
             }`}
           >
             ✎
@@ -133,8 +134,10 @@ function QuestionsPhase({
             onClick={onToggleFlag}
             aria-label={flags[qIdx] ? "Unflag question" : "Flag question"}
             aria-pressed={!!flags[qIdx]}
-            className={`rounded-md px-2.5 py-[5px] text-xs min-w-[80px] text-center cursor-pointer transition-all duration-[120ms] border ${
-              flags[qIdx] ? "bg-warn-dim border-warn text-warn" : "bg-sf2 border-bdr text-tx3"
+            className={`rounded-md px-2.5 py-[5px] text-xs min-w-[80px] text-center cursor-pointer transition-all duration-[120ms] hover:scale-[1.02] border ${
+              flags[qIdx]
+                ? "bg-warn-dim border-warn text-warn"
+                : "bg-sf2 border-bdr text-tx3 hover:border-bdr2 hover:text-tx2"
             }`}
           >
             {flags[qIdx] ? "⚑ Flagged" : "⚐ Flag"}
@@ -161,7 +164,7 @@ function QuestionsPhase({
               key={i}
               onClick={() => onSetQIdx(gi)}
               aria-label={`Question ${i + 1}${cur ? " (current)" : ""}${ans ? " answered" : ""}${fl ? " flagged" : ""}`}
-              className={`h-9 rounded-[5px] text-[11px] font-semibold cursor-pointer flex items-center justify-center transition-all duration-[120ms] border ${cls}`}
+              className={`h-9 rounded-[5px] text-[11px] font-semibold cursor-pointer flex items-center justify-center transition-all duration-[120ms] hover:scale-[1.04] border ${cls}`}
             >
               {i + 1}
             </button>
@@ -176,6 +179,7 @@ function QuestionsPhase({
         choices={choices}
         qIdx={qIdx}
         mod={mod}
+        question={question}
         answers={answers}
         crossouts={crossouts}
         onSetAnswer={onSetAnswer}

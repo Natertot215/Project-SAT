@@ -1,6 +1,6 @@
 export type Section = "rw" | "math" | "mixed";
 export type SessionType = "practice" | "test";
-export type Phase = "questions" | "break" | "results" | "review";
+export type Phase = "loading" | "questions" | "break" | "results" | "review";
 
 export type Skill = string;
 
@@ -16,12 +16,21 @@ export interface Module {
 
 export interface Question {
   id: number;
+  section: "rw" | "math";
+  skill: Skill;
+  difficulty: Difficulty;
+  passage: string | null;
+  stem: string;
+  choices: string[];
+  correctIndex: number;
+  explanation: string;
+  chartData: unknown | null;
+  imagePath: string | null;
 }
 
 export type AnswerMap = Record<number, number | null>;
 export type FlagMap = Record<number, boolean>;
 export type CrossoutMap = Record<string, boolean>;
-export type CorrectMap = Record<number, number>;
 
 export interface ReviewResult {
   answered: boolean;
@@ -32,12 +41,13 @@ export interface ReviewResult {
   isRW: boolean;
 }
 
-export interface SessionState {
+// Stored in localStorage. Holds question IDs only — full rows are re-fetched
+// from Supabase on resume so canonical content stays in the database.
+export interface PersistedSession {
   sessionType: SessionType;
   modules: Module[];
-  questions: Question[];
+  questionIds: number[];
   questionSkills: Skill[];
-  correctMap: CorrectMap;
   currentMod: number;
   qIdx: number;
   answers: AnswerMap;
@@ -46,8 +56,13 @@ export interface SessionState {
 }
 
 export type SessionInit =
-  | { resume: SessionState }
-  | { type: SessionType; n: number; skills: Skill[] };
+  | { resume: PersistedSession }
+  | {
+      type: SessionType;
+      n: number;
+      skills: Skill[];
+      difficulty: DifficultyChoice;
+    };
 
 export interface HistoryEntry {
   id: number;

@@ -1,13 +1,13 @@
 import Btn from "../primitives/Btn";
-import type { CrossoutMap, Module, ReviewResult } from "../../types";
+import type { CrossoutMap, Module, Question, ReviewResult } from "../../types";
 
 interface ReviewBodyProps {
   wide: boolean;
-  isRW: boolean;
   choices: string[];
   r: Partial<ReviewResult>;
   qIdx: number;
   mod: Module;
+  question: Question | undefined;
   isLastMod: boolean;
   currentMod: number;
   crossouts: CrossoutMap;
@@ -18,11 +18,11 @@ interface ReviewBodyProps {
 
 export default function ReviewBody({
   wide,
-  isRW,
   choices,
   r,
   qIdx,
   mod,
+  question,
   isLastMod,
   currentMod,
   crossouts,
@@ -33,20 +33,27 @@ export default function ReviewBody({
   const modLocalIdx = qIdx - mod.start;
   const stemBlock = (
     <div className="px-5 py-4 bg-sf rounded-lg border border-bdr">
-      <span className="text-tx3 text-[15px]">Question text placeholder</span>
+      <div className="text-[11px] text-tx3 uppercase tracking-[.07em] mb-3 font-semibold">
+        Question
+      </div>
+      <div className="text-tx2 text-[15px] whitespace-pre-wrap">
+        {question?.stem ?? ""}
+      </div>
     </div>
   );
 
-  const passageBlock = (
+  const passageText = question?.passage ?? null;
+  const showPassage = passageText != null && passageText.length > 0;
+  const passageBlock = showPassage ? (
     <div className="bg-sf border border-bdr rounded-lg p-6">
       <div className="text-[11px] text-tx3 uppercase tracking-[.07em] mb-3 font-semibold">
-        {isRW ? "Passage" : "Reference"}
+        Content
       </div>
-      <div className="min-h-[80px] border border-dashed border-bdr2 rounded-md flex items-center justify-center text-tx3 text-[15px] p-4">
-        {isRW ? "Passage content" : "Reference material"}
+      <div className="min-h-[80px] text-tx2 text-[15px] leading-[1.7] whitespace-pre-wrap p-1">
+        {passageText}
       </div>
     </div>
-  );
+  ) : null;
 
   const choicesBlock = (
     <div className="flex flex-col gap-2">
@@ -54,6 +61,7 @@ export default function ReviewBody({
         const wasYours = r.picked === ci;
         const isCorrect = r.correctChoice === ci;
         const wasCrossed = crossouts[`${qIdx}-${ci}`];
+        const choiceText = question?.choices?.[ci] ?? "";
         let wrapCls = "border-bdr bg-transparent text-tx2";
         let badgeCls = "bg-sf text-tx3 border-bdr2";
         let label = "";
@@ -81,7 +89,10 @@ export default function ReviewBody({
             >
               {letter}
             </span>
-            <span className="text-[15px] flex-1">Answer placeholder{label}</span>
+            <span className="text-[15px] flex-1">
+              {choiceText}
+              {label}
+            </span>
             {wasYours && !isCorrect && (
               <span className="text-[11px] font-semibold">Your answer</span>
             )}
@@ -96,8 +107,8 @@ export default function ReviewBody({
       <div className="text-[11px] text-tx3 uppercase tracking-[.07em] mb-2 font-semibold">
         Explanation
       </div>
-      <p className="text-tx2 text-[15px] leading-[1.6] m-0">
-        Explanation placeholder — AI-generated reasoning will appear here.
+      <p className="text-tx2 text-[15px] leading-[1.6] m-0 whitespace-pre-wrap">
+        {question?.explanation ?? ""}
       </p>
     </div>
   );

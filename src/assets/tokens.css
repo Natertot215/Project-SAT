@@ -42,4 +42,51 @@
 
   /* ── Spacing ──────────────────────────────────────────────────── */
   --sat-pad: 40px;
+
+  /* ── Fluid scaling tokens ─────────────────────────────────────────
+   * Each --scale-* clamps a CSS length so components grow linearly
+   * with viewport width between 1366px (the standard 16:9 laptop
+   * anchor — base sizing) and 1920px (full-HD anchor — target
+   * sizing). Values clamp to the base below 1366 and to the target
+   * above 1920. Formula: clamp(base, slope*vw + intercept, target).
+   * To re-anchor, recompute slope = delta*100/554 and
+   * intercept = base - delta*1366/554. */
+  --scale-shell-py:            clamp(20px, calc(2.889vw - 19.45px), 36px);
+  --scale-h1-text:             clamp(22px, calc(1.083vw + 7.20px), 28px);
+  --scale-h1-mb:               clamp(2px,  calc(0.722vw - 7.86px),  6px);
+  --scale-p-text:              clamp(13px, calc(0.541vw + 5.61px),  16px);
+  --scale-section-gap:         clamp(16px, calc(2.889vw - 23.45px), 32px);
+
+  --scale-skillsel-cols-gap:   clamp(24px, calc(1.444vw + 4.27px),  32px);
+  --scale-section-header-mb:   clamp(8px,  calc(1.444vw - 11.73px), 16px);
+  --scale-section-header-text: clamp(16px, calc(0.541vw + 8.61px),  19px);
+  --scale-selectall-px:        clamp(12px, calc(1.444vw - 7.73px),  20px);
+  --scale-selectall-py:        clamp(5px,  calc(0.541vw - 2.39px),  8px);
+  --scale-selectall-text:      clamp(12px, calc(0.180vw + 9.54px),  13px);
+  --scale-selectall-rounded:   clamp(6px,  calc(0.361vw + 1.07px),  8px);
+  --scale-subtype-mb:          clamp(8px,  calc(2.166vw - 21.59px), 20px);
+  --scale-subtype-title-text:  clamp(13px, calc(0.361vw + 8.07px),  15px);
+  --scale-subtype-title-mb:    clamp(4px,  calc(0.722vw - 5.87px),  8px);
+  --scale-subtype-count-text:  clamp(11px, calc(0.180vw + 8.54px),  12px);
+  --scale-pillgrid-gap:        clamp(4px,  calc(0.361vw - 0.93px),  6px);
+
+  --scale-pill-px-wide:        clamp(12px, calc(1.444vw - 7.73px),  20px);
+  --scale-pill-px-narrow:      clamp(8px,  calc(0.722vw - 1.87px),  12px);
+  --scale-pill-py:             clamp(5px,  calc(0.541vw - 2.39px),  8px);
+  --scale-pill-text:           clamp(12px, calc(0.180vw + 9.54px),  13px);
+  --scale-pill-rounded:        clamp(6px,  calc(0.361vw + 1.07px),  8px);
+
+  --scale-toolbar-gap:         clamp(10px, calc(1.805vw - 14.66px), 20px);
+
+  --scale-sidebar-w:           clamp(224px, calc(5.054vw + 154.96px), 252px);
+  --scale-sidebar-py:          clamp(24px,  calc(2.166vw - 5.59px),   36px);
+  --scale-sidebar-brand-text:  clamp(15px,  calc(0.361vw + 10.07px),  17px);
+  --scale-sidebar-brand-pb:    clamp(20px,  calc(1.805vw - 4.66px),   30px);
+  --scale-sidebar-brand-px:    clamp(18px,  calc(0.722vw + 8.13px),   22px);
+  --scale-sidebar-nav-px:      clamp(8px,   calc(0.361vw + 3.07px),   10px);
+  --scale-sidebar-navbtn-px:   clamp(12px,  calc(0.361vw + 7.07px),   14px);
+  --scale-sidebar-navbtn-py:   clamp(8px,   calc(0.361vw + 3.07px),   10px);
+  --scale-sidebar-navbtn-text: clamp(13px,  calc(0.361vw + 8.07px),   15px);
+
+  --scale-label-mb:            clamp(6px,   calc(0.361vw + 1.07px),   8px);
 }

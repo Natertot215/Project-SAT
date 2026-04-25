@@ -1,14 +1,13 @@
 import { memo } from "react";
 import ModuleDropdown from "../../components/ModuleDropdown";
 import ReviewBody from "../../components/session/ReviewBody";
-import { isRWQuestion } from "../../data/taxonomy";
-import type { CrossoutMap, FlagMap, Module, ReviewResult, SessionType, Skill } from "../../types";
+import type { CrossoutMap, FlagMap, Module, Question, ReviewResult, Skill } from "../../types";
 
 interface ReviewPhaseProps {
-  sessionType: SessionType;
   modules: Module[];
   currentMod: number;
   qIdx: number;
+  question: Question | undefined;
   questionSkills: Skill[];
   results: ReviewResult[];
   flags: FlagMap;
@@ -20,10 +19,10 @@ interface ReviewPhaseProps {
 }
 
 function ReviewPhase({
-  sessionType,
   modules,
   currentMod,
   qIdx,
+  question,
   questionSkills,
   results,
   flags,
@@ -39,7 +38,6 @@ function ReviewPhase({
   const r = results[qIdx] || ({} as Partial<ReviewResult>);
   const choices = ["A", "B", "C", "D"];
   const qSkill = questionSkills[qIdx] || "";
-  const isRW = isRWQuestion(qSkill, sessionType, mod.sec);
 
   const statusLabel = r.correct ? "✓ Correct" : r.answered ? "✗ Wrong" : "Skipped";
   const statusClass = r.correct
@@ -55,7 +53,7 @@ function ReviewPhase({
           <button
             onClick={onHome}
             aria-label="Home"
-            className="bg-sf2 border border-bdr rounded-md text-tx3 text-xs cursor-pointer px-2.5 py-[5px] w-9 flex items-center justify-center transition-all duration-[120ms]"
+            className="bg-sf2 border border-bdr rounded-md text-tx3 text-xs cursor-pointer px-2.5 py-[5px] w-9 flex items-center justify-center transition-all duration-[120ms] hover:scale-[1.02] hover:border-bdr2 hover:text-tx2"
           >
             ⌂
           </button>
@@ -97,7 +95,7 @@ function ReviewPhase({
               key={i}
               onClick={() => onSetQIdx(gi)}
               aria-label={`Review question ${i + 1}${cur ? " (current)" : ""}`}
-              className={`h-9 rounded-[5px] text-[11px] font-semibold border-[1.5px] cursor-pointer flex items-center justify-center transition-all duration-[120ms] ${
+              className={`h-9 rounded-[5px] text-[11px] font-semibold border-[1.5px] cursor-pointer flex items-center justify-center transition-all duration-[120ms] hover:scale-[1.04] ${
                 cur ? "bg-sf3 border-tx2 text-tx" : `bg-transparent ${cls}`
               }`}
             >
@@ -113,11 +111,11 @@ function ReviewPhase({
         </div>
         <ReviewBody
           wide={wide}
-          isRW={isRW}
           choices={choices}
           r={r}
           qIdx={qIdx}
           mod={mod}
+          question={question}
           isLastMod={isLastMod}
           currentMod={currentMod}
           crossouts={crossouts}

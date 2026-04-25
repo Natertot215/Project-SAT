@@ -7,9 +7,10 @@ import HistoryView from "./views/HistoryView";
 import SessionView from "./views/session/SessionView";
 import * as storage from "./lib/storage";
 import type {
+  DifficultyChoice,
   HistoryEntry,
+  PersistedSession,
   SessionInit,
-  SessionState,
   SessionType,
   Skill,
 } from "./types";
@@ -22,9 +23,9 @@ export default function App() {
   const [history, setHistory] = useState<HistoryEntry[]>(() =>
     storage.get<HistoryEntry[]>("history", []),
   );
-  const [savedSession, setSavedSession] = useState<SessionState | null>(() => {
-    const raw = storage.get<SessionState | null>("savedSession", null);
-    return storage.isValidSessionState(raw) ? raw : null;
+  const [savedSession, setSavedSession] = useState<PersistedSession | null>(() => {
+    const raw = storage.get<unknown>("savedSession", null);
+    return storage.isValidPersistedSession(raw) ? raw : null;
   });
 
   useEffect(() => {
@@ -34,14 +35,19 @@ export default function App() {
     storage.set("savedSession", savedSession);
   }, [savedSession]);
 
-  const startSession = (type: SessionType, n: number, skills: Skill[]) => {
-    setSessionInit({ type, n, skills });
+  const startSession = (
+    type: SessionType,
+    n: number,
+    skills: Skill[],
+    difficulty: DifficultyChoice,
+  ) => {
+    setSessionInit({ type, n, skills, difficulty });
     setSavedSession(null);
     setView("session");
   };
 
   const resumeSession = () => {
-    if (!storage.isValidSessionState(savedSession)) {
+    if (!storage.isValidPersistedSession(savedSession)) {
       setSavedSession(null);
       return;
     }
@@ -49,8 +55,8 @@ export default function App() {
     setView("session");
   };
 
-  const handleSaveAndExit = (sessionState: SessionState) => {
-    setSavedSession(sessionState);
+  const handleSaveAndExit = (persisted: PersistedSession) => {
+    setSavedSession(persisted);
     setSessionInit(null);
     setView("home");
   };

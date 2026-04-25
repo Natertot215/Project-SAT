@@ -27,17 +27,17 @@ export const TAXONOMY: Record<"rw" | "math", TaxonomySection> = {
       ],
       "Advanced Math": [
         "Nonlinear functions",
-        "Nonlinear equations in one variable and systems of equations in two variables",
+        "Nonlinear systems of equations",
         "Equivalent expressions",
       ],
       "Problem-Solving and Data Analysis": [
-        "Ratios, rates, proportional relationships, and units",
+        "Ratios, rates, proportions, and units",
         "Percentages",
-        "One-variable data: Distributions and measures of center and spread",
-        "Two-variable data: Models and scatterplots",
+        "One-variable data",
+        "Two-variable data",
         "Probability and conditional probability",
-        "Inference from sample statistics and margin of error",
-        "Evaluating statistical claims: Observational studies and experiments",
+        "Inference from statistics",
+        "Evaluating statistical claims",
       ],
       "Geometry and Trigonometry": [
         "Area and volume",

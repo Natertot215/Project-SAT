@@ -8,3 +8,11 @@ CLAUDE.md
 .mcp.json
 .claude/
 docs/superpowers/
+
+# Local debug / audit artifacts (never committed)
+.playwright-mcp/
+audit-*.png
+fluid-*.png
+practice-*.png
+scale-*.png
+session-*.png
