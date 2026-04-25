@@ -1,4 +1,4 @@
-# SAT Prep
+# Modulaire
 
 Self-hosted SAT prep webapp. Vite + React + TypeScript + Tailwind CSS, with a Supabase-backed shared question bank.
 

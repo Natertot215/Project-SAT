@@ -18,7 +18,7 @@ export default function Sidebar({ active, onNavigate, savedSession, onResume }: 
   return (
     <div className="w-[252px] flex-shrink-0 border-r border-bdr flex flex-col py-9 sticky top-0 h-screen">
       <div className="px-[22px] pb-[30px]">
-        <div className="text-[17px] font-bold tracking-[-.01em] text-tx">SAT Prep</div>
+        <div className="text-[17px] font-bold tracking-[-.01em] text-tx">Modulaire</div>
       </div>
 
       <nav className="flex flex-col gap-0.5 px-2.5">
