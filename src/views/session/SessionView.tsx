@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import useBreakpoint from "../../hooks/useBreakpoint";
+import useWideAspect from "../../hooks/useWideAspect";
 import { buildModules } from "../../lib/modules";
 import { assignSkills } from "../../lib/skills";
 import { generateCorrectAnswers } from "../../lib/api";
@@ -86,7 +86,9 @@ export default function SessionView({ init, onHome, onSaveAndExit, onSubmit }: S
   const [phase, setPhase] = useState<Phase>("questions");
   const [confirmHome, setConfirmHome] = useState(false);
 
-  const wide = useBreakpoint(1000);
+  // Aspect-ratio threshold: side-by-side layout when window is wider than 2.25:1.
+  // Below that, vertical stack with answers anchored at the bottom.
+  const wide = useWideAspect(2.25);
 
   const answeredCount = Object.values(answers).filter((v) => v != null).length;
 
