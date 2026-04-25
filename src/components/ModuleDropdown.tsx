@@ -18,7 +18,7 @@ export default function ModuleDropdown({ modules, currentMod, onSelect }: Module
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        className="bg-sf2 border border-bdr rounded-md text-tx2 text-xs cursor-pointer px-3 py-[5px] flex items-center gap-1.5 transition-all duration-[120ms]"
+        className="bg-sf2 border border-bdr rounded-md text-tx2 text-xs cursor-pointer px-3 py-[5px] flex items-center gap-1.5 transition-all duration-[120ms] hover:bg-sf3 hover:border-bdr2 hover:text-tx hover:scale-[1.02]"
       >
         {cur.label.replace("Reading & Writing", "R&W")}
         <span className="text-[10px] text-tx3">{open ? "▲" : "▼"}</span>
@@ -42,7 +42,7 @@ export default function ModuleDropdown({ modules, currentMod, onSelect }: Module
                 aria-selected={isCur}
                 className={`block w-full px-4 py-2.5 text-left text-xs cursor-pointer transition-all duration-[120ms] border-0 ${
                   notLast ? "border-b border-bdr" : ""
-                } ${isCur ? "bg-sf2 text-tx font-semibold" : "bg-transparent text-tx2 font-normal"}`}
+                } ${isCur ? "bg-sf2 text-tx font-semibold" : "bg-transparent text-tx2 font-normal hover:bg-sf2 hover:text-tx"}`}
               >
                 {m.label.replace("Reading & Writing", "R&W")}
               </button>

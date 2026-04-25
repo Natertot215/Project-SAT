@@ -45,7 +45,7 @@ export default function Sidebar({ active, onNavigate, savedSession, onResume }: 
         <div className="mt-auto px-2.5">
           <button
             onClick={onResume}
-            className="w-full text-left px-[14px] py-3 rounded-[7px] bg-sf border border-bdr text-[13px] cursor-pointer"
+            className="w-full text-left px-[14px] py-3 rounded-[7px] bg-sf border border-bdr text-[13px] cursor-pointer transition-all duration-[120ms] hover:bg-sf2 hover:border-bdr2 hover:scale-[1.02]"
           >
             <div className="text-xs text-tx3 mb-1">In Progress</div>
             <div className="font-semibold text-tx2">Resume Session →</div>

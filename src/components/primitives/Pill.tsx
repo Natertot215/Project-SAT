@@ -16,10 +16,10 @@ export default function Pill({ active, children, onClick, fullWidth, large }: Pi
   return (
     <button
       onClick={onClick}
-      className={`${size} leading-[1.4] ${layout} transition-all duration-[120ms] border ${
+      className={`${size} leading-[1.4] ${layout} cursor-pointer transition-all duration-[120ms] border hover:scale-[1.02] ${
         active
-          ? "font-semibold border-tx2 bg-sel-dim text-sel"
-          : "font-normal border-bdr bg-transparent text-tx2"
+          ? "font-semibold border-tx2 bg-sel-dim text-sel hover:border-tx"
+          : "font-normal border-bdr bg-transparent text-tx2 hover:border-bdr2 hover:text-tx"
       }`}
     >
       {children}

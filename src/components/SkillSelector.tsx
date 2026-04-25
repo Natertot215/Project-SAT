@@ -21,12 +21,14 @@ function SkillColumn({ sec, skills, onToggleSkill, onToggleCategory, onToggleSec
   return (
     <div className="flex-1 min-w-0">
       <div className="flex items-center justify-between mb-4">
-        <span className="text-[17px] font-bold text-tx">{t.label}</span>
+        <span className="text-[19px] font-bold text-tx">{t.label}</span>
         <button
           onClick={() => onToggleSection(sec)}
           aria-label={`${allSel ? "Deselect" : "Select"} all ${t.label} skills`}
-          className={`rounded-[5px] px-[11px] py-[5px] text-xs font-semibold cursor-pointer transition-all duration-[120ms] border ${
-            allSel ? "bg-sel-dim text-sel border-tx2" : "bg-transparent text-tx3 border-bdr"
+          className={`rounded-lg px-5 py-2 text-[13px] font-semibold cursor-pointer transition-all duration-[120ms] border hover:scale-[1.02] ${
+            allSel
+              ? "bg-sel-dim text-sel border-tx2 hover:border-tx"
+              : "bg-transparent text-tx3 border-bdr hover:bg-sel-dim hover:border-bdr2 hover:text-tx2"
           }`}
         >
           {allSel ? "Deselect All" : "Select All"}
@@ -36,24 +38,24 @@ function SkillColumn({ sec, skills, onToggleSkill, onToggleCategory, onToggleSec
         const catAll = subSkills.every((s) => skills.includes(s));
         const catCount = subSkills.filter((s) => skills.includes(s)).length;
         return (
-          <div key={sub} className="mb-5">
+          <div key={sub} className="mb-5 last:mb-0">
             <div className="flex items-center gap-2 mb-2">
               <button
                 onClick={() => onToggleCategory(sec, sub)}
                 aria-label={`Toggle category ${sub}`}
-                className={`bg-transparent border-0 cursor-pointer p-0 text-[13px] font-semibold transition-colors duration-[120ms] ${
+                className={`bg-transparent border-0 cursor-pointer p-0 text-[15px] font-semibold transition-colors duration-[120ms] hover:text-tx ${
                   catAll ? "text-tx" : "text-tx2"
                 }`}
               >
                 {sub}
               </button>
-              <span className="text-[11px] text-tx3">
+              <span className="text-[12px] text-tx3">
                 {catCount}/{subSkills.length}
               </span>
             </div>
             <div className="flex flex-wrap gap-1.5">
               {subSkills.map((s) => (
-                <Pill key={s} active={skills.includes(s)} onClick={() => onToggleSkill(s)}>
+                <Pill key={s} large active={skills.includes(s)} onClick={() => onToggleSkill(s)}>
                   {s}
                 </Pill>
               ))}

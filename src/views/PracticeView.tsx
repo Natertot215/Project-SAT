@@ -15,7 +15,7 @@ interface PracticeViewProps {
 const COUNT_OPTIONS = [10, 20, 30, 40, 50, 60] as const;
 
 const INLINE_LABEL_CLS =
-  "text-[11px] font-semibold text-tx3 uppercase tracking-[.08em] whitespace-nowrap";
+  "text-[12px] font-semibold text-tx3 uppercase tracking-[.08em] whitespace-nowrap";
 
 export default function PracticeView({ onStart }: PracticeViewProps) {
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -42,14 +42,16 @@ export default function PracticeView({ onStart }: PracticeViewProps) {
   return (
     <Shell wide>
       <div className="mx-auto">
-        <h1 className="text-[26px] font-bold mb-1.5">Practice</h1>
-        <p className="text-tx3 text-sm mb-9">
+        <h1 className="text-[28px] font-bold mb-1.5">Practice</h1>
+        <p className="text-tx3 text-base mb-8">
           Select skills from either or both sections.
         </p>
-        <SkillSelector skills={skills} setSkills={setSkills} />
+        <div className="border-t border-bdr pt-8">
+          <SkillSelector skills={skills} setSkills={setSkills} />
+        </div>
 
         {inline ? (
-          <div className="border-t border-bdr pt-6 grid items-center gap-4 grid-cols-[auto_minmax(0,6fr)_auto_auto_minmax(0,4fr)_auto_auto]">
+          <div className="border-t border-bdr pt-8 grid items-center gap-4 grid-cols-[auto_minmax(0,6fr)_auto_auto_minmax(0,4fr)_auto_auto]">
             <span className={INLINE_LABEL_CLS}>Questions</span>
             <div className="grid grid-cols-6 gap-1.5 min-w-0">
               {COUNT_OPTIONS.map((n) => (
@@ -83,7 +85,7 @@ export default function PracticeView({ onStart }: PracticeViewProps) {
             {startBtn}
           </div>
         ) : (
-          <div className="border-t border-bdr pt-6 flex flex-col gap-5">
+          <div className="border-t border-bdr pt-8 flex flex-col gap-5">
             <div>
               <Label>Questions</Label>
               <div className="grid grid-cols-6 gap-1.5 mt-2">
