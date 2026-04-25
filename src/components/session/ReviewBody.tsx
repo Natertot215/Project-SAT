@@ -1,5 +1,5 @@
 import Btn from "../primitives/Btn";
-import type { CrossoutMap, ReviewResult } from "../../types";
+import type { CrossoutMap, Module, ReviewResult } from "../../types";
 
 interface ReviewBodyProps {
   wide: boolean;
@@ -7,9 +7,7 @@ interface ReviewBodyProps {
   choices: string[];
   r: Partial<ReviewResult>;
   qIdx: number;
-  modStart: number;
-  modLocalIdx: number;
-  modCount: number;
+  mod: Module;
   isLastMod: boolean;
   currentMod: number;
   crossouts: CrossoutMap;
@@ -24,9 +22,7 @@ export default function ReviewBody({
   choices,
   r,
   qIdx,
-  modStart,
-  modLocalIdx,
-  modCount,
+  mod,
   isLastMod,
   currentMod,
   crossouts,
@@ -34,6 +30,7 @@ export default function ReviewBody({
   onSetCurrentMod,
   onHome,
 }: ReviewBodyProps) {
+  const modLocalIdx = qIdx - mod.start;
   const stemBlock = (
     <div className="px-5 py-4 bg-sf rounded-lg border border-bdr">
       <span className="text-tx3 text-[15px]">Question text placeholder</span>
@@ -107,10 +104,10 @@ export default function ReviewBody({
 
   const navBlock = (
     <div className="flex justify-between mt-6">
-      <Btn small disabled={qIdx <= modStart} onClick={() => onSetQIdx(qIdx - 1)}>
+      <Btn small disabled={qIdx <= mod.start} onClick={() => onSetQIdx(qIdx - 1)}>
         ← Prev
       </Btn>
-      {modLocalIdx < modCount - 1 ? (
+      {modLocalIdx < mod.count - 1 ? (
         <Btn small onClick={() => onSetQIdx(qIdx + 1)}>
           Next →
         </Btn>

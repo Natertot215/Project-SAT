@@ -2,7 +2,7 @@ import { memo } from "react";
 import Btn from "../../components/primitives/Btn";
 import ModuleDropdown from "../../components/ModuleDropdown";
 import QuestionBody from "../../components/session/QuestionBody";
-import { isRWSkill } from "../../data/taxonomy";
+import { isRWQuestion } from "../../data/taxonomy";
 import type { AnswerMap, CrossoutMap, FlagMap, Module, Skill } from "../../types";
 
 interface QuestionsPhaseProps {
@@ -59,7 +59,7 @@ function QuestionsPhase({
   const mod = modules[currentMod] || { start: 0, count: 0, label: "", sec: "mixed" };
   const modLocalIdx = qIdx - mod.start;
   const qSkill = questionSkills[qIdx] || "";
-  const isRW = isRWSkill(qSkill) || (sessionType === "test" && mod.sec === "rw");
+  const isRW = isRWQuestion(qSkill, sessionType, mod.sec);
   const choices = ["A", "B", "C", "D"];
   const showSkill = sessionType === "practice";
 
@@ -175,9 +175,7 @@ function QuestionsPhase({
         highlighting={highlighting}
         choices={choices}
         qIdx={qIdx}
-        modStart={mod.start}
-        modLocalIdx={modLocalIdx}
-        modCount={mod.count}
+        mod={mod}
         answers={answers}
         crossouts={crossouts}
         onSetAnswer={onSetAnswer}

@@ -1,5 +1,5 @@
 import Btn from "../primitives/Btn";
-import type { AnswerMap, CrossoutMap } from "../../types";
+import type { AnswerMap, CrossoutMap, Module } from "../../types";
 
 interface QuestionBodyProps {
   wide: boolean;
@@ -7,9 +7,7 @@ interface QuestionBodyProps {
   highlighting: boolean;
   choices: string[];
   qIdx: number;
-  modStart: number;
-  modLocalIdx: number;
-  modCount: number;
+  mod: Module;
   answers: AnswerMap;
   crossouts: CrossoutMap;
   onSetAnswer: (ci: number) => void;
@@ -24,9 +22,7 @@ export default function QuestionBody({
   highlighting,
   choices,
   qIdx,
-  modStart,
-  modLocalIdx,
-  modCount,
+  mod,
   answers,
   crossouts,
   onSetAnswer,
@@ -34,6 +30,7 @@ export default function QuestionBody({
   onSetQIdx,
   onGoBreak,
 }: QuestionBodyProps) {
+  const modLocalIdx = qIdx - mod.start;
   const stemBlock = (
     <div className="px-5 py-4 bg-sf rounded-lg border border-bdr">
       <span className="text-tx3 text-[15px]">Question text will appear here</span>
@@ -125,10 +122,10 @@ export default function QuestionBody({
 
   const navBlock = (
     <div className="flex justify-between mt-6">
-      <Btn small disabled={qIdx <= modStart} onClick={() => onSetQIdx(qIdx - 1)}>
+      <Btn small disabled={qIdx <= mod.start} onClick={() => onSetQIdx(qIdx - 1)}>
         ← Prev
       </Btn>
-      {modLocalIdx < modCount - 1 ? (
+      {modLocalIdx < mod.count - 1 ? (
         <Btn small onClick={() => onSetQIdx(qIdx + 1)}>
           Next →
         </Btn>

@@ -57,4 +57,14 @@ export const MATH_SKILLS: Skill[] = allSkills("math");
 
 export const isRWSkill = (s: Skill): boolean => RW_SKILLS.includes(s);
 
+// True if a question should render as Reading & Writing (passage UI, highlighting,
+// etc.). Practice sessions decide per-question by skill; test sessions decide by
+// the current module's section, since test modules are uniformly RW or Math even
+// when individual skills aren't yet assigned.
+export const isRWQuestion = (
+  skill: Skill,
+  sessionType: "practice" | "test",
+  modSec: Section,
+): boolean => isRWSkill(skill) || (sessionType === "test" && modSec === "rw");
+
 export type { Section };

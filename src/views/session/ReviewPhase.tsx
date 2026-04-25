@@ -1,7 +1,7 @@
 import { memo } from "react";
 import ModuleDropdown from "../../components/ModuleDropdown";
 import ReviewBody from "../../components/session/ReviewBody";
-import { isRWSkill } from "../../data/taxonomy";
+import { isRWQuestion } from "../../data/taxonomy";
 import type { CrossoutMap, FlagMap, Module, ReviewResult, SessionType, Skill } from "../../types";
 
 interface ReviewPhaseProps {
@@ -39,7 +39,7 @@ function ReviewPhase({
   const r = results[qIdx] || ({} as Partial<ReviewResult>);
   const choices = ["A", "B", "C", "D"];
   const qSkill = questionSkills[qIdx] || "";
-  const isRW = isRWSkill(qSkill) || (sessionType === "test" && mod.sec === "rw");
+  const isRW = isRWQuestion(qSkill, sessionType, mod.sec);
 
   const statusLabel = r.correct ? "✓ Correct" : r.answered ? "✗ Wrong" : "Skipped";
   const statusClass = r.correct
@@ -117,9 +117,7 @@ function ReviewPhase({
           choices={choices}
           r={r}
           qIdx={qIdx}
-          modStart={mod.start}
-          modLocalIdx={modLocalIdx}
-          modCount={mod.count}
+          mod={mod}
           isLastMod={isLastMod}
           currentMod={currentMod}
           crossouts={crossouts}
